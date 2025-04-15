@@ -1,26 +1,37 @@
+<!-- src/App.vue -->
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" v-if="isAuthReady">
+    <AppHeader />
+    <main class="main-content">
+      <router-view />
+    </main>
+  </div>
+  <div v-else>Loading...</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AppHeader from "./components/AppHeader.vue";
+import { isAuthReady } from "./firebase";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  setup() {
+    return { isAuthReady };
+  },
+  components: { AppHeader },
+};
 </script>
 
-<style>
+<style scoped>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 40px; /* Offset for fixed header */
+  font-family: Arial, sans-serif;
 }
 </style>
