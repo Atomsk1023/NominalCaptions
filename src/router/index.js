@@ -1,18 +1,22 @@
 import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/homeView.vue";
+import OrdersView from "../views/ordersView.vue";
+import LoginView from "../views/loginView.vue";
+import PrivacyView from "../views/privacyView.vue";
+import TermsView from "../views/termsView.vue";
 import { user, isAuthReady } from "../firebase";
-import Home from "../views/homeView.vue";
-import Orders from "../views/ordersView.vue";
-import Login from "../views/loginView.vue";
 
 const routes = [
-  { path: "/", name: "Home", component: Home, meta: { requiresAuth: true } },
+  { path: "/", name: "Home", component: HomeView },
   {
     path: "/orders",
     name: "Orders",
-    component: Orders,
+    component: OrdersView,
     meta: { requiresAuth: true },
   },
-  { path: "/login", name: "Login", component: Login },
+  { path: "/login", name: "Login", component: LoginView },
+  { path: "/privacy", name: "Privacy", component: PrivacyView },
+  { path: "/terms", name: "Terms", component: TermsView },
 ];
 
 const router = createRouter({
@@ -20,22 +24,15 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-
-  // Wait for auth state to resolve
-  const checkAuth = () => {
-    if (!isAuthReady.value) {
-      setTimeout(checkAuth, 100); // Poll until ready
-    } else if (requiresAuth && !user.value) {
-      next("/login");
-    } else if (!requiresAuth && user.value) {
-      next("/"); // Redirect logged-in users from /login
-    } else {
-      next();
-    }
-  };
-  checkAuth();
+router.beforeEach(async (to, from, next) => {
+  if (!isAuthReady.value) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  if (to.matched.some((record) => record.meta.requiresAuth) && !user.value) {
+    next({ path: "/login", query: { redirect: to.fullPath } });
+  } else {
+    next();
+  }
 });
 
 export default router;

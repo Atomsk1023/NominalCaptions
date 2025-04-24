@@ -1,4 +1,3 @@
-<!-- src/components/AppHeader.vue -->
 <template>
   <header class="app-header">
     <div class="header-container">
@@ -8,7 +7,9 @@
         <router-link v-if="user" to="/orders" class="nav-item"
           >Orders</router-link
         >
-        <button v-if="user" @click="logout" class="nav-item nav-button">
+        <router-link to="/privacy" class="nav-item">Privacy</router-link>
+        <router-link to="/terms" class="nav-item">Terms</router-link>
+        <button v-if="user" @click="handleLogout" class="nav-item nav-button">
           Logout
         </button>
         <router-link v-else to="/login" class="nav-item">Login</router-link>
@@ -31,9 +32,14 @@
               to="/orders"
               class="dropdown-item"
               @click="toggleMenu"
+              >Orders</router-link
             >
-              Orders
-            </router-link>
+            <router-link to="/privacy" class="dropdown-item" @click="toggleMenu"
+              >Privacy</router-link
+            >
+            <router-link to="/terms" class="dropdown-item" @click="toggleMenu"
+              >Terms</router-link
+            >
             <button
               v-if="user"
               class="dropdown-item dropdown-button"
@@ -46,9 +52,8 @@
               to="/login"
               class="dropdown-item"
               @click="toggleMenu"
+              >Login</router-link
             >
-              Login
-            </router-link>
           </nav>
         </transition>
       </div>

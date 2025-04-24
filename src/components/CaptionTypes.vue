@@ -69,7 +69,7 @@ function toggleCaptionType(type) {
   min-width: 100px;
   font-size: 18px;
   font-weight: bold;
-  padding: 10px;
+  padding: 5px;
   background-color: #e9e9e9;
   border: 1px solid #ccc;
   border-radius: 5px;
