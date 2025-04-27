@@ -1,5 +1,7 @@
 <template>
+  <!-- Main container for Styled Captions options -->
   <div class="burn-in-container" :class="{ selected: burnIn }">
+    <!-- Checkbox to toggle Styled Captions -->
     <label class="main-option">
       <input
         type="checkbox"
@@ -7,6 +9,7 @@
         @change="$emit('toggle-burn-in', $event.target.checked)"
       />
       Styled Captions
+      <!-- Label for the main option -->
     </label>
     <div v-if="burnIn" class="sub-options">
       <h4>Style options</h4>
@@ -14,24 +17,21 @@
         <!-- Row 1 -->
         <div class="style-item">
           <label class="style-label">Caption color</label>
-          <input
-            type="color"
-            :value="textColor"
-            @input="$emit('update:text-color', $event.target.value)"
-          />
+          <input <!-- Input to select caption color -- />
+          type="color" :value="textColor" @input="$emit('update:text-color',
+          $event.target.value)" />
         </div>
         <div class="style-item">
           <label class="style-label">Outline color</label>
-          <input
-            type="color"
-            :value="outlineColor"
-            @input="$emit('update:outline-color', $event.target.value)"
-          />
+          <input <!-- Input to select outline color -- />
+          type="color" :value="outlineColor"
+          @input="$emit('update:outline-color', $event.target.value)" />
         </div>
         <!-- Row 2 -->
         <div class="style-item">
           <label class="style-label">Caption size</label>
           <div class="size-options">
+            <!-- Range input to adjust caption size -->
             <input
               type="range"
               :value="captionSize"
@@ -46,6 +46,7 @@
         <div class="style-item">
           <label class="style-label">Outline thickness</label>
           <div class="thickness-options">
+            <!-- Range input to adjust outline thickness -->
             <input
               type="range"
               :value="outlineThickness"
@@ -62,10 +63,9 @@
         <!-- Row 3 -->
         <div class="style-item">
           <label class="style-label">Caption font</label>
-          <select
-            :value="captionFont"
-            @change="$emit('update:caption-font', $event.target.value)"
-          >
+          <select <!-- Select dropdown to choose caption font -->
+            :value="captionFont" @change="$emit('update:caption-font',
+            $event.target.value)" >
             <option value="Arial">Arial</option>
             <option value="Verdana">Verdana</option>
             <option value="Times New Roman">Times New Roman</option>
@@ -75,6 +75,7 @@
         <div class="style-item position-item">
           <div class="position-options">
             <label class="style-label">Caption position</label>
+            <!-- Range input to adjust caption position -->
             <input
               type="range"
               :value="captionPosition"
@@ -89,12 +90,14 @@
           </div>
         </div>
       </div>
+      <!-- Divider -->
       <hr class="section-divider" />
       <h4>Content delivery options</h4>
       <div class="delivery-columns">
         <div class="column">
           <div class="row tooltip-row">
             <span class="tooltip">
+              <!-- Tooltip for downloadable .ass file -->
               ?
               <span class="tooltip-text"
                 >Receive downloadable .ass file upon completion</span
@@ -104,6 +107,7 @@
           <div class="row label-row">
             <label class="column-label">Downloadable .ass file</label>
           </div>
+          <!-- Checkbox for downloadable .ass file -->
           <div class="row checkbox-row">
             <input
               type="checkbox"
@@ -117,6 +121,7 @@
         <div class="column">
           <div class="row tooltip-row">
             <span class="tooltip">
+              <!-- Tooltip for burn-in option -->
               ?
               <span class="tooltip-text"
                 >Please note, only available for uploaded videos</span
@@ -126,6 +131,7 @@
           <div class="row label-row">
             <label class="column-label">Burn in</label>
           </div>
+          <!-- Checkbox for burn-in option -->
           <div class="row checkbox-row">
             <input
               type="checkbox"
@@ -142,6 +148,7 @@
 <script setup>
 import { computed } from "vue";
 
+// Define properties that can be passed to the component
 const props = defineProps({
   burnIn: Boolean,
   textColor: String,
@@ -154,6 +161,7 @@ const props = defineProps({
   advancedBurnIn: Boolean,
 });
 defineEmits([
+  // Define events that the component can emit
   "toggle-burn-in",
   "update:text-color",
   "update:outline-color",
@@ -165,11 +173,13 @@ defineEmits([
   "update:advanced-burn-in",
 ]);
 
+// Computed property to determine the label for caption position
 const positionLabel = computed(() => {
   if (props.captionPosition === 0) return "Bottom";
   if (props.captionPosition === 100) return "Top";
   return `${props.captionPosition}%`;
 });
+// end of script setup
 </script>
 
 <style scoped>

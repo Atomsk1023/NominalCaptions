@@ -12,214 +12,32 @@
       <button
         class="minimize-button"
         @click.stop="$emit('update:isExpanded', false)"
-      >
-        x
-      </button>
+      ></button>
       <div v-if="captionType === 'Styled Captions'">
-        <h4>Style Options</h4>
-        <label>
-          Text Color:
-          <input
-            type="color"
-            :value="styledTextColor"
-            @input="emit('update:styledTextColor', $event.target.value)"
-          />
-        </label>
-        <label>
-          Outline Color:
-          <input
-            type="color"
-            :value="styledOutlineColor"
-            @input="emit('update:styledOutlineColor', $event.target.value)"
-          />
-        </label>
-        <label>
-          Outline Thickness:
-          <input
-            type="range"
-            :value="styledOutlineThickness"
-            min="0"
-            max="5"
-            step="0.1"
-            @input="
-              emit('update:styledOutlineThickness', Number($event.target.value))
-            "
-          />
-          {{ styledOutlineThickness }}px
-        </label>
-        <label>
-          Font Size:
-          <input
-            type="range"
-            :value="styledCaptionSize"
-            min="10"
-            max="50"
-            step="1"
-            @input="
-              emit('update:styledCaptionSize', Number($event.target.value))
-            "
-          />
-          {{ styledCaptionSize }}px
-        </label>
-        <label>
-          Font:
-          <select
-            :value="styledCaptionFont"
-            @change="emit('update:styledCaptionFont', $event.target.value)"
-          >
-            <option value="Arial">Arial</option>
-            <option value="Verdana">Verdana</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Comic Sans MS">Comic Sans MS</option>
-          </select>
-        </label>
-        <label>
-          Position:
-          <input
-            type="range"
-            :value="styledCaptionPosition"
-            min="0"
-            max="100"
-            step="1"
-            @input="
-              emit('update:styledCaptionPosition', Number($event.target.value))
-            "
-          />
-          {{ styledCaptionPosition }}%
-        </label>
+        <component
+          v-for="option in styledOptions"
+          :key="option.label"
+          :is="option.component"
+          v-bind="option.props"
+          @update:value="$emit(option.emit, $event)"
+        />
       </div>
+
       <div v-if="captionType === 'Dynamic Captions'">
-        <h4>Base Style Options</h4>
-        <label>
-          Text Color:
-          <input
-            type="color"
-            :value="dynamicTextColor"
-            @input="emit('update:dynamicTextColor', $event.target.value)"
-          />
-        </label>
-        <label>
-          Outline Color:
-          <input
-            type="color"
-            :value="dynamicOutlineColor"
-            @input="emit('update:dynamicOutlineColor', $event.target.value)"
-          />
-        </label>
-        <label>
-          Outline Thickness:
-          <input
-            type="range"
-            :value="dynamicOutlineThickness"
-            min="0"
-            max="5"
-            step="0.1"
-            @input="
-              emit(
-                'update:dynamicOutlineThickness',
-                Number($event.target.value)
-              )
-            "
-          />
-          {{ dynamicOutlineThickness }}px
-        </label>
-        <label>
-          Font Size:
-          <input
-            type="range"
-            :value="dynamicCaptionSize"
-            min="10"
-            max="50"
-            step="1"
-            @input="
-              emit('update:dynamicCaptionSize', Number($event.target.value))
-            "
-          />
-          {{ dynamicCaptionSize }}px
-        </label>
-        <label>
-          Font:
-          <select
-            :value="dynamicCaptionFont"
-            @change="emit('update:dynamicCaptionFont', $event.target.value)"
-          >
-            <option value="Arial">Arial</option>
-            <option value="Verdana">Verdana</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Comic Sans MS">Comic Sans MS</option>
-          </select>
-        </label>
-        <label>
-          Position:
-          <input
-            type="range"
-            :value="dynamicCaptionPosition"
-            min="0"
-            max="100"
-            step="1"
-            @input="
-              emit('update:dynamicCaptionPosition', Number($event.target.value))
-            "
-          />
-          {{ dynamicCaptionPosition }}%
-        </label>
-        <hr class="section-divider" />
-        <h4>Dynamic Style Options</h4>
-        <label>
-          Highlight Color:
-          <input
-            type="color"
-            :value="dynamicHighlightColor"
-            @input="emit('update:dynamicHighlightColor', $event.target.value)"
-          />
-        </label>
-        <label>
-          Highlight Outline Color:
-          <input
-            type="color"
-            :value="dynamicHighlightOutlineColor"
-            @input="
-              emit('update:dynamicHighlightOutlineColor', $event.target.value)
-            "
-          />
-        </label>
-        <label>
-          Highlight Outline Thickness:
-          <input
-            type="range"
-            :value="dynamicHighlightOutlineThickness"
-            min="0"
-            max="5"
-            step="0.1"
-            @input="
-              emit(
-                'update:dynamicHighlightOutlineThickness',
-                Number($event.target.value)
-              )
-            "
-          />
-          {{ dynamicHighlightOutlineThickness }}px
-        </label>
-        <label>
-          Highlight Size:
-          <input
-            type="range"
-            :value="dynamicHighlightSize"
-            min="1"
-            max="2"
-            step="0.1"
-            @input="
-              emit('update:dynamicHighlightSize', Number($event.target.value))
-            "
-          />
-          {{ dynamicHighlightSize }}x
-        </label>
+        <component
+          v-for="option in dynamicOptions"
+          :key="option.label"
+          :is="option.component"
+          v-bind="option.props"
+          @update:value="$emit(option.emit, $event)"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import StyleOption from "./StyleOptions.vue";
 defineProps({
   captionType: String,
   styledTextColor: String,
@@ -241,7 +59,7 @@ defineProps({
   isExpanded: Boolean,
 });
 
-const emit = defineEmits([
+defineEmits([
   "update:styledTextColor",
   "update:styledOutlineColor",
   "update:styledOutlineThickness",
@@ -261,10 +79,142 @@ const emit = defineEmits([
   "update:isExpanded",
 ]);
 </script>
+<script>
+export default {
+  setup(props) {
+    const styledOptions = [
+      {
+        label: "Text Color",
+        component: StyleOption,
+        props: {
+          type: "color",
+          label: "Text Color",
+          value: props.styledTextColor,
+        },
+        emit: "update:styledTextColor",
+      },
+      {
+        label: "Outline Color",
+        component: StyleOption,
+        props: {
+          type: "color",
+          label: "Outline Color",
+          value: props.styledOutlineColor,
+        },
+        emit: "update:styledOutlineColor",
+      },
+      {
+        label: "Outline Thickness",
+        component: StyleOption,
+        props: {
+          type: "range",
+          label: "Outline Thickness",
+          value: props.styledOutlineThickness,
+          min: 0,
+          max: 5,
+          step: 0.1,
+          unit: "px",
+        },
+        emit: "update:styledOutlineThickness",
+      },
+      {
+        label: "Font Size",
+        component: StyleOption,
+        props: {
+          type: "range",
+          label: "Font Size",
+          value: props.styledCaptionSize,
+          min: 10,
+          max: 50,
+          step: 1,
+          unit: "px",
+        },
+        emit: "update:styledCaptionSize",
+      },
+      {
+        label: "Font",
+        component: StyleOption,
+        props: {
+          type: "select",
+          label: "Font",
+          value: props.styledCaptionFont,
+          options: ["Arial", "Verdana", "Times New Roman", "Comic Sans MS"],
+        },
+        emit: "update:styledCaptionFont",
+      },
+      {
+        label: "Position",
+        component: StyleOption,
+        props: {
+          type: "range",
+          label: "Position",
+          value: props.styledCaptionPosition,
+          min: 0,
+          max: 100,
+          step: 1,
+          unit: "%",
+        },
+        emit: "update:styledCaptionPosition",
+      },
+    ];
 
+    const dynamicOptions = [
+      {
+        label: "Highlight Color",
+        component: StyleOption,
+        props: {
+          type: "color",
+          label: "Highlight Color",
+          value: props.dynamicHighlightColor,
+        },
+        emit: "update:dynamicHighlightColor",
+      },
+      {
+        label: "Highlight Outline Color",
+        component: StyleOption,
+        props: {
+          type: "color",
+          label: "Highlight Outline Color",
+          value: props.dynamicHighlightOutlineColor,
+        },
+        emit: "update:dynamicHighlightOutlineColor",
+      },
+      {
+        label: "Highlight Outline Thickness",
+        component: StyleOption,
+        props: {
+          type: "range",
+          label: "Highlight Outline Thickness",
+          value: props.dynamicHighlightOutlineThickness,
+          min: 0,
+          max: 5,
+          step: 0.1,
+          unit: "px",
+        },
+        emit: "update:dynamicHighlightOutlineThickness",
+      },
+      {
+        label: "Highlight Size",
+        component: StyleOption,
+        props: {
+          type: "range",
+          label: "Highlight Size",
+          value: props.dynamicHighlightSize,
+          min: 1,
+          max: 2,
+          step: 0.1,
+          unit: "x",
+        },
+        emit: "update:dynamicHighlightSize",
+      },
+    ];
+    return { styledOptions, dynamicOptions };
+  },
+};
+</script>
 <style scoped>
 .right-options {
-  width: 150px;
+  width: 160px;
   min-height: 100%;
   background-color: #fff;
   border: 1px solid #ccc;

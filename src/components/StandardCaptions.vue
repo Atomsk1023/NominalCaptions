@@ -1,5 +1,6 @@
 <template>
   <div class="srt-container" :class="{ selected: standardSrt }">
+    <!-- Main Option for Standard Captions -->
     <label class="main-option">
       <input
         type="checkbox"
@@ -8,8 +9,10 @@
       />
       Standard Captions
     </label>
+    <!-- Sub-options that appear when Standard Captions are selected -->
     <div v-if="standardSrt" class="sub-options">
       <h4>Content delivery options</h4>
+      <!-- Delivery Options Columns -->
       <div class="delivery-columns">
         <div class="column">
           <div class="row tooltip-row">
@@ -78,15 +81,20 @@
   </div>
 </template>
 
+<!-- Component Script -->
 <script setup>
+// Define props to receive data from parent
 defineProps({
   standardSrt: Boolean,
   downloadableSrt: Boolean,
   grantYouTube: Boolean,
   standardBurnIn: Boolean,
 });
+
+// Define emits to send data to parent
 defineEmits([
   "toggle-standard-srt",
+  //Emits that update the parent's values
   "update:downloadable-srt",
   "update:grant-you-tube",
   "update:standard-burn-in",

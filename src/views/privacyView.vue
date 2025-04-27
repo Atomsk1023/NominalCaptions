@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 
+// Email for contacting the service
 const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
 </script>
 
@@ -8,6 +9,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
   <div class="privacy-container">
     <h1>Privacy Policy</h1>
     <p>Last updated: April 22, 2025</p>
+    <!-- Section explaining YouTube permissions -->
     <h2>YouTube Permissions</h2>
     <p>
       Nominal Captions requests access to your YouTube account solely to upload
@@ -16,6 +18,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
       YouTube account, such as playlists, channels, other videos, or account
       settings.
     </p>
+    <!-- Section explaining data usage -->
     <h2>Data Usage</h2>
     <p>
       We collect your Google account email and profile information for
@@ -23,6 +26,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
       Storage and used only to provide captioning services.
     </p>
     <h2>Contact</h2>
+    <!-- Contact information -->
     <p>
       For questions, contact us at
       <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a

@@ -1,5 +1,7 @@
 <template>
+  <!-- Main container for Dynamic Captions -->
   <div class="dynamic-container" :class="{ selected: dynamic }">
+    <!-- Main option to toggle Dynamic Captions -->
     <label class="main-option">
       <input
         type="checkbox"
@@ -8,6 +10,8 @@
       />
       Dynamic Captions
     </label>
+
+    <!-- Sub-options container (visible only when dynamic is checked) -->
     <div v-if="dynamic" class="sub-options">
       <h4>Base style options</h4>
       <div class="style-grid">
@@ -129,55 +133,54 @@
               "
             />
           </div>
-          <div class="dynamic-option">
-            <label class="style-label">Highlight outline thickness</label>
-            <div class="thickness-options">
-              <input
-                type="range"
-                :value="highlightOutlineThickness"
-                min="0"
-                max="5"
-                step="1"
-                @input="
-                  $emit(
-                    'update:highlight-outline-thickness',
-                    Number($event.target.value)
-                  )
+        </div>
+        <div class="dynamic-option">
+          <label class="style-label">Highlight outline thickness</label>
+          <div class="thickness-options">
+            <input
+              type="range"
+              :value="highlightOutlineThickness"
+              min="0"
+              max="5"
+              step="1"
+              @input="$emit(
+                    'update:highlight-outline-thickness', Number($event.target.value)
                 "
-              />
-              <span>{{ highlightOutlineThickness }}px</span>
-            </div>
+            />
+            <span>{{ highlightOutlineThickness }}px</span>
           </div>
         </div>
       </div>
-      <hr class="section-divider" />
-      <h4>Content delivery options</h4>
-      <div class="delivery-columns">
-        <div class="column">
-          <div class="row tooltip-row">
-            <span class="tooltip">
-              ?
-              <span class="tooltip-text"
-                >Burn-in is required for dynamic captions</span
-              >
-            </span>
-          </div>
-          <div class="row label-row">
-            <label class="column-label">Burn in</label>
-          </div>
-          <div class="row checkbox-row">
-            <input type="checkbox" :checked="true" disabled />
-          </div>
+    </div>
+    <hr class="section-divider" />
+    <h4>Content delivery options</h4>
+    <div class="delivery-columns">
+      <div class="column">
+        <div class="row tooltip-row">
+          <span class="tooltip">
+            ?
+            <span class="tooltip-text"
+              >Burn-in is required for dynamic captions</span
+            >
+          </span>
+        </div>
+        <div class="row label-row">
+          <label class="column-label">Burn in</label>
+        </div>
+        <div class="row checkbox-row">
+          <input type="checkbox" :checked="true" disabled />
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<!-- Script setup for DynamicCaptions component -->
 <script setup>
 import { computed } from "vue";
 
 const props = defineProps({
+  // Props for basic caption style options
   dynamic: Boolean,
   textColor: String,
   outlineColor: String,
@@ -185,12 +188,15 @@ const props = defineProps({
   captionSize: Number,
   captionFont: String,
   captionPosition: Number,
+  // Props for dynamic style options
   highlightColor: String,
   highlightOutlineColor: String,
   highlightOutlineThickness: Number,
   highlightSize: Number,
+  // Props for content delivery options
   dynamicDownloadableSrt: Boolean,
   dynamicBurnIn: Boolean,
+  // Events emitted by this component
 });
 defineEmits([
   "toggle-dynamic",
@@ -208,6 +214,7 @@ defineEmits([
   "update:dynamic-burn-in",
 ]);
 
+// Computed property to determine the label for caption position
 const positionLabel = computed(() => {
   if (props.captionPosition === 0) return "Bottom";
   if (props.captionPosition === 100) return "Top";
@@ -215,6 +222,7 @@ const positionLabel = computed(() => {
 });
 </script>
 
+<!-- Styling for DynamicCaptions component -->
 <style scoped>
 .dynamic-container {
   border: 1px solid #ccc;

@@ -1,4 +1,5 @@
 <!-- src/components/VideoPreview.vue -->
+<!-- src/components/VideoPreview.vue -->
 <template>
   <div class="preview">
     <div class="thumbnail-container">
@@ -35,16 +36,22 @@
     </p>
     <div class="button-container">
       <button @click="addToCart" :disabled="uploading || !isAddToCartEnabled()">
+        <!-- Add to Cart button, disabled if uploading or conditions not met -->
         Add to Cart
       </button>
       <button @click="remove" :disabled="uploading">Remove</button>
+      <!-- Remove button, disabled if uploading -->
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, ref, onMounted, onUnmounted, watch } from "vue";
-
+/*
+ * @description: This component displays a preview of a video with its thumbnail and caption options.
+ * @props: { preview: Object, uploading: Boolean } - preview: Object containing video details, uploading: Boolean indicating if a video is being uploaded
+ * @emits: { add-to-cart: Object, remove: Object } - add-to-cart: Emits the preview object when the user clicks "Add to Cart", remove: Emits the preview object when the user clicks "Remove"
+ */
 const props = defineProps({
   preview: { type: Object, required: true },
   uploading: { type: Boolean, default: false },
@@ -55,6 +62,7 @@ const captionWords = "Your captions here.".split(" ");
 const highlightedWordIndex = ref(0);
 let animationInterval = null;
 
+// Computed style for the caption overlay
 const baseOverlayStyle = computed(() => {
   return {
     position: "absolute",
@@ -79,6 +87,7 @@ const baseOverlayStyle = computed(() => {
   };
 });
 
+// Computed style for each word in the caption
 const getWordStyle = computed(() => {
   return (index) => {
     const baseStyle = {
@@ -136,6 +145,7 @@ const getWordStyle = computed(() => {
   };
 });
 
+// Function to start the animation for Dynamic Captions
 function startAnimation() {
   stopAnimation();
   if (props.preview.captionType === "Dynamic Captions") {
@@ -146,6 +156,7 @@ function startAnimation() {
   }
 }
 
+// Function to stop the animation
 function stopAnimation() {
   if (animationInterval) {
     clearInterval(animationInterval);
@@ -153,6 +164,7 @@ function stopAnimation() {
   }
 }
 
+// Start the animation when the component is mounted
 onMounted(() => {
   startAnimation();
 });
@@ -161,6 +173,7 @@ onUnmounted(() => {
   stopAnimation();
 });
 
+// Watch for changes in captionType to start or stop the animation
 watch(
   () => props.preview.captionType,
   (newType) => {
@@ -172,14 +185,17 @@ watch(
   }
 );
 
+// Emit the add-to-cart event
 function addToCart() {
   emit("add-to-cart", props.preview);
 }
 
+// Emit the remove event
 function remove() {
   emit("remove", props.preview);
 }
 
+// Function to determine if the "Add to Cart" button should be enabled
 function isAddToCartEnabled() {
   const { captionType, contentDeliveryOptions, source } = props.preview;
   if (!captionType || !contentDeliveryOptions) return false;
@@ -203,6 +219,7 @@ function isAddToCartEnabled() {
   return false;
 }
 
+// Function to format duration from minutes to mm:ss
 function formatDuration(minutes) {
   const totalSeconds = Math.round(minutes * 60);
   const mins = Math.floor(totalSeconds / 60);
@@ -210,6 +227,7 @@ function formatDuration(minutes) {
   return `${mins}:${secs < 10 ? "0" + secs : secs}`;
 }
 
+// Check if the video is a YouTube Short
 const isYouTubeShort = computed(() => {
   return (
     props.preview.source === "YouTube" &&

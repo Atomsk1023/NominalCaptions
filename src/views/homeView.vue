@@ -1,28 +1,38 @@
 <script setup>
+// Import necessary modules from Vue, Vue Router, and Firebase.
 import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { user, auth } from "@/firebase";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+// Import the OrderForm component.
 import OrderForm from "../components/OrderForm.vue";
 
+// Initialize the router.
 const router = useRouter();
+// Load cart data from local storage or initialize an empty array.
 const cart = ref(JSON.parse(localStorage.getItem("cart")) || []);
+// Reference to the OrderForm component.
 const orderFormRef = ref(null);
+// Load preview data from local storage or initialize it to null.
 const preview = ref(JSON.parse(localStorage.getItem("preview")) || null);
+// Store any error messages.
 const error = ref(null);
+// Control the display of the YouTube permissions prompt.
 const showYouTubePrompt = ref(false);
 
+// Compute the total price of items in the cart.
 const total = computed(() => {
   return cart.value.reduce((sum, item) => sum + (item.price || 0), 0);
 });
 
+// Compute the list of YouTube videos in the cart that require permissions.
 const youTubeVideos = computed(() => {
   return cart.value
     .filter((item) => item.contentDeliveryOptions === "grantYouTube")
-    .map((item) => item.file); // Adjust to item.videoTitle if available
+    .map((item) => item.file);
 });
 
-// Persist cart to local storage
+// Watch for changes in the cart and persist it to local storage.
 watch(
   cart,
   (newCart) => {
@@ -31,7 +41,7 @@ watch(
   { deep: true }
 );
 
-// Persist preview to local storage
+// Watch for changes in the preview and persist it to local storage.
 watch(
   preview,
   (newPreview) => {
@@ -40,7 +50,7 @@ watch(
   { deep: true }
 );
 
-// Restore preview on mount
+// Restore the preview when the component is mounted.
 onMounted(() => {
   if (
     preview.value &&
@@ -51,15 +61,18 @@ onMounted(() => {
   }
 });
 
+// Function to update the preview data.
 function showPreviews(data) {
   preview.value = data;
 }
 
+// Function to add an order to the cart.
 function addToCart(order) {
   console.log("Adding to cart:", order);
   cart.value.push(order);
 }
 
+// Function to remove an item from the cart.
 function removeFromCart(item) {
   cart.value = cart.value.filter((i) => i !== item);
   if (orderFormRef.value && orderFormRef.value.returnToPreviews) {
@@ -69,6 +82,7 @@ function removeFromCart(item) {
   }
 }
 
+// Function to request YouTube permissions from the user.
 async function requestYouTubePermissions() {
   try {
     const provider = new GoogleAuthProvider();
@@ -85,6 +99,7 @@ async function requestYouTubePermissions() {
   }
 }
 
+// Function to proceed with the checkout process.
 async function proceedToCheckout() {
   try {
     const totalAmount = total.value.toFixed(2);
@@ -103,6 +118,7 @@ async function proceedToCheckout() {
   }
 }
 
+// Function to initiate the checkout process.
 async function checkout() {
   if (cart.value.length === 0) return;
   if (!user.value) {
@@ -121,13 +137,14 @@ async function checkout() {
   }
 }
 
+// Function to format duration from minutes to MM:SS.
 function formatDuration(minutes) {
   const totalSeconds = Math.round(minutes * 60);
   const mins = Math.floor(totalSeconds / 60);
   const secs = totalSeconds % 60;
   return `${mins}:${secs < 10 ? "0" + secs : secs}`;
 }
-
+// Function to format the caption options for display in the cart.
 function formatCaptionOptions(item) {
   const { captionType, contentDeliveryOptions } = item;
   if (!captionType)
@@ -264,6 +281,7 @@ function formatCaptionOptions(item) {
   return options;
 }
 </script>
+<!-- Template for the Home View -->
 
 <template>
   <div>
@@ -288,6 +306,7 @@ function formatCaptionOptions(item) {
               <th>Price</th>
             </tr>
           </thead>
+          <!-- Loop through the formatted options for each item -->
           <tbody>
             <tr
               v-for="(option, index) in formatCaptionOptions(item)"
@@ -342,6 +361,7 @@ function formatCaptionOptions(item) {
   </div>
 </template>
 
+<!-- Styling for the Home View -->
 <style scoped>
 .cart-container {
   max-width: 600px;

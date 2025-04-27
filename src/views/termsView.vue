@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
 
+// Define a ref for the contact email, which can be customized.
+// The email is displayed in the contact section of the Terms of Service.
 const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
 </script>
 
@@ -9,6 +11,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
     <h1>Terms of Service</h1>
     <p>Last updated: April 22, 2025</p>
     <h2>Acceptance of Terms</h2>
+    <!-- Agreement to the Terms of Service -->
     <p>
       By using Nominal Captions ("Service"), you agree to these Terms of
       Service. If you do not agree, please do not use the Service.
@@ -21,6 +24,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
       in accordance with these Terms.
     </p>
     <h2>YouTube Permissions</h2>
+    <!-- Explanation of YouTube permissions -->
     <p>
       To upload captions to your YouTube videos, we require permission to access
       your YouTube account. This access is limited to uploading .srt files to
@@ -29,6 +33,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
       other videos.
     </p>
     <h2>User Responsibilities</h2>
+    <!-- List of user responsibilities -->
     <p>You are responsible for:</p>
     <ul>
       <li>
@@ -40,6 +45,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
       </li>
     </ul>
     <h2>Payment and Refunds</h2>
+    <!-- Payment and refund terms -->
     <p>
       Payments for captioning services are processed through our payment
       provider. Refunds are subject to our refund policy, available upon
@@ -47,6 +53,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
     </p>
     <h2>Limitation of Liability</h2>
     <p>
+      <!-- Limitation of liability clause -->
       Nominal Captions is not liable for any indirect, incidental, or
       consequential damages arising from the use of the Service. The Service is
       provided "as is" without warranties of any kind.
@@ -58,6 +65,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
     </p>
     <h2>Contact</h2>
     <p>
+      <!-- Contact information -->
       For questions, contact us at
       <a :href="`mailto:${contactEmail}`">{{ contactEmail }}</a
       >.
@@ -66,6 +74,7 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
 </template>
 
 <style scoped>
+/* Style for the terms container */
 .terms-container {
   max-width: 800px;
   margin: 0 auto;
@@ -73,11 +82,13 @@ const contactEmail = ref("nominalcaptions@gmail.com"); // Customize
   font-family: Arial, sans-serif;
 }
 
+/* Style for the headers */
 h1,
 h2 {
   color: #333;
 }
 
+/* Style for the paragraphs */
 p {
   line-height: 1.6;
 }
@@ -88,6 +99,7 @@ ul {
   margin: 10px 0;
 }
 
+/* Style for the links */
 a {
   color: #4285f4;
   text-decoration: none;

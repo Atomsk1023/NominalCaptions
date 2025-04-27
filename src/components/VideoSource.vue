@@ -1,4 +1,5 @@
 <!-- src/components/VideoSource.vue -->
+<!-- src/components/VideoSource.vue -->
 <template>
   <div class="video-source-container">
     <div class="columns">
@@ -17,20 +18,28 @@
   </div>
 </template>
 
+<!-- Script section -->
 <script setup>
+// Import the child components
 import YouTubeInput from "./YouTubeInput.vue";
 import VideoUpload from "./VideoUpload.vue";
 
+// Define the events that this component can emit
 const emit = defineEmits(["add-video"]);
 
+// Function to handle the event when a new video is added from YouTube
 function handleAddVideo(videoData) {
+  // Emit the 'add-video' event with the video data received from the child component
   emit("add-video", videoData);
 }
 
+// Function to handle the event when a video upload is complete
 function handleUploadComplete(uploadedVideos) {
+  // Loop through all the videos uploaded
   uploadedVideos.forEach((videoData) => {
+    // Emit the 'add-video' event with each video data, adding extra information.
     emit("add-video", {
-      ...videoData,
+      ...videoData, // Spread operator to keep the video data
       source: "Upload",
       aspectRatio:
         videoData.width && videoData.height
@@ -41,6 +50,7 @@ function handleUploadComplete(uploadedVideos) {
 }
 </script>
 
+<!-- Style section -->
 <style scoped>
 .video-source-container {
   max-width: 600px;
@@ -55,6 +65,7 @@ function handleUploadComplete(uploadedVideos) {
   box-sizing: border-box;
 }
 
+/* Main container for the columns */
 .columns {
   display: flex;
   flex-direction: row;
@@ -63,6 +74,7 @@ function handleUploadComplete(uploadedVideos) {
   justify-content: center;
 }
 
+/* Style for the YouTube and Upload columns */
 .youtube-column,
 .upload-column {
   flex: 1;
@@ -72,6 +84,7 @@ function handleUploadComplete(uploadedVideos) {
   gap: 10px;
 }
 
+/* Style for the separator */
 .separator {
   display: flex;
   flex-direction: column;
@@ -80,13 +93,14 @@ function handleUploadComplete(uploadedVideos) {
   width: 30px; /* Fixed width for separator */
 }
 
+/* Style for the separator lines */
 .line {
   width: 100%;
   border: 0;
   border-top: 1px solid #ccc;
   transform: rotate(90deg); /* Vertical line */
 }
-
+/* Style for the OR text */
 .or-text {
   font-weight: bold;
   color: #666;
